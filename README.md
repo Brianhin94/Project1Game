@@ -4,7 +4,7 @@ This familiar game slithered its way into the heart of many of us. Known to be f
 Its a game that truly stands the test of time
 
 ## Tech to be used!
-HTML YAY!
+***HTML YAY!
 CSS AWESOME!
 JAVASCRIPT COOL!
 
