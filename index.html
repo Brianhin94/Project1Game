@@ -1,0 +1,22 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SNAKE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h2>Snake</h2>
+	<div class="info">
+		<input type="button" value="Start Game" onclick="start(this);" id="startBtn"/>
+		<input type="button" value="Pause" onclick="game.toggle(this);" id="startBtn"/>
+		<div>Level: <b id="level">0</b></div>
+		<div>Score: <b id="score">0</b></div>
+	</div>
+	<div id="gboard"></div>
+	
+	<script src="script.js"defer></script>
+</body>
+</html>

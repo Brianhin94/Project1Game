@@ -1,0 +1,38 @@
+
+
+div.info{
+	margin-bottom: 10px;
+	width: 500px;
+	height: 30px;
+}
+
+div.info input[type="button"]{
+	float:left;
+}
+
+
+div#gboard {
+	width: 500px;
+	height: 500px;
+    border: 1px solid #ababab;
+    background-image: url("https://www.thestatesman.com/wp-content/uploads/2017/08/1488265078-nokia-phone-517-getty.jpg");
+}
+
+#gboard div{
+	width: 10px;
+	height: 10px;
+	box-sizing: border-box;
+    float: left;
+   
+}
+
+#gboard div.glow{
+    background-color: green;
+    border-color: black;
+    border-radius: 10px;
+}
+
+#gboard div.food{
+    background-color: red;
+	border-radius: 10px;
+}
