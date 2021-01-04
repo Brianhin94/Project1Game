@@ -1,13 +1,20 @@
+body {
+	background-color: chartreuse;
+	font-size: large;
+}
 
-
+h2 {
+	font-size: xx-large;
+}
 div.info{
 	margin-bottom: 10px;
 	width: 500px;
 	height: 30px;
 }
-
 div.info input[type="button"]{
 	float:left;
+	color: red;
+	background: chartreuse;
 }
 
 
@@ -15,7 +22,7 @@ div#gboard {
 	width: 500px;
 	height: 500px;
     border: 1px solid #ababab;
-    background-image: url("https://www.thestatesman.com/wp-content/uploads/2017/08/1488265078-nokia-phone-517-getty.jpg");
+    background-image: url("https://i.imgur.com/yngH7GK.jpg");
 }
 
 #gboard div{
@@ -27,7 +34,7 @@ div#gboard {
 }
 
 #gboard div.glow{
-    background-color: green;
+    background-color: rgba(209, 119, 119, 0.747);
     border-color: black;
     border-radius: 10px;
 }

@@ -24,7 +24,7 @@ var gameBoard = {
 		var elem = this.node.childNodes[(y*this.size)+x];
 		elem.className = "";
 	},
-	foodPoint: function(x,y){ // render food point and update 
+	foodPoint: function(x,y){ // make new foods
 		if(game.state==1 && this.pointFood.y && this.pointFood.x)
 			this.node.childNodes[(this.pointFood.y * this.size)+this.pointFood.x].className = "glow";
 		
@@ -81,7 +81,7 @@ var snake = {
 		return nextPoint;
 	},
 	moveSnake: function(nxtPt,isFood){ 
-		if(!isFood){ // in case food is there in next step don't delete tail
+		if(!isFood){ // making snake grow after eating 
 			var tail = this.path.shift();
 			gameBoard.hidePoint(tail.x,tail.y);
 		}
@@ -89,13 +89,13 @@ var snake = {
 		this.path.push(nxtPt);
 	}
 };
-
+// game state stuff
 var game = {
 	speed: 200,
 	level: 0,
 	food: 0,
 	intervalId: null,
-	state: 0, //0 = not started, 1 = in progress, 2 = paused, 3 = over
+	state: 0, 
 	init: function(){
 		this.speed=200;this.level=0;this.food=0;this.state=0;
 		gameBoard.levelNode.innerHTML=0;gameBoard.scoreNode.innerHTML=0;
@@ -104,7 +104,7 @@ var game = {
 		document.addEventListener("keydown",this.eventHandler); //listen for key down event
 		this.start();
 	},
-	on: function(){ // function to continue the game to next step
+	on: function(){ // moving the snake
 		var nextPt = snake.nextPosition();
 		if(nextPt.x < 0 || nextPt.x >= gameBoard.size || nextPt.y < 0 || nextPt.y >= gameBoard.size){ // if snake going out of board
 			game.over();
@@ -113,7 +113,7 @@ var game = {
 			var isPresent = snake.path.filter(function(pt){ 
 				return nextPt.x==pt.x && nextPt.y==pt.y;
 			});
-			if(isPresent.length > 0) //check if snake next point lies in snake path
+			if(isPresent.length > 0) //check if tail is in way
 				game.over();
 			else{
 				if(nextPt.x==gameBoard.pointFood.x && nextPt.y==gameBoard.pointFood.y){ // snake eats food
@@ -121,7 +121,7 @@ var game = {
 					game.updateScore();
 					gameBoard.newFoodPoint();
 				}else
-					snake.moveSnake(nextPt); // snake simply moves to next point
+					snake.moveSnake(nextPt); // snake moves to next point
 			}
 		}
 	},
@@ -138,7 +138,7 @@ var game = {
 		}
 		gameBoard.scoreNode.innerHTML=(this.level*1000) + (this.food*50);
 	},
-	over: function(){ // stop the game and calc score
+	over: function(){ // pause the game and score 
 		clearInterval(this.intervalId);
 		document.removeEventListener("keypress",this.eventHandler);
 		var score = (this.level*1000) + (this.food*50);
@@ -184,11 +184,11 @@ var game = {
 };
 
 
-// for keeping it didn't add event Listener for button instead used onclick on button
-function start(btn){ //onclick of start game btn
+// event listener for buttoon
+function start(btn){ 
 	gameBoard.clear();
 	game.init();
 	btn.disabled = true;
 }
 
-gameBoard.init(); //initialize game board
+gameBoard.init(); 
