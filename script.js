@@ -1,5 +1,11 @@
+const LEFT_KEY = 37;
+   const RIGHT_KEY = 39;
+   const UP_KEY = 38;
+   const DOWN_KEY = 40;
+
+
 var gameBoard = {
-	size: 50, //grid size
+	size: 50, 
 	pointFood: {x:0,y:0},
 	scoreNode: null,
 	levelNode: null,
@@ -16,6 +22,7 @@ var gameBoard = {
 			this.node.appendChild(elem);
 		}
 	},
+	// create snake using glow
 	glowPoint: function(x,y){
 		var elem = this.node.childNodes[(y*this.size)+x];
 		elem.className = "glow";
@@ -24,22 +31,23 @@ var gameBoard = {
 		var elem = this.node.childNodes[(y*this.size)+x];
 		elem.className = "";
 	},
-	foodPoint: function(x,y){ // make new foods
+	foodPoint: function(x,y){
 		if(game.state==1 && this.pointFood.y && this.pointFood.x)
 			this.node.childNodes[(this.pointFood.y * this.size)+this.pointFood.x].className = "glow";
-		
 		this.node.childNodes[(y*this.size)+x].className = "food";
 		this.pointFood.x = x;
 		this.pointFood.y = y;
 	},
-	newFoodPoint: function(){ //find new point for food on board
+	//find new point for food on board
+	newFoodPoint: function(){ 
 		var x = Math.floor(Math.random() * this.size);
 		var y = Math.floor(Math.random() * this.size);  
 		var isPresent = snake.path.filter(function(pt){ 
 			return x==pt.x && y==pt.y;
 		});
+		 // to do, check if all points are covered.
 		if(isPresent.length > 0)
-			this.newFoodPoint(); // to do, check if all points are covered.
+			this.newFoodPoint();
 		else
 			this.foodPoint(x,y);
 	},
@@ -50,7 +58,6 @@ var gameBoard = {
 		this.hidePoint(this.pointFood.x,this.pointFood.y);
 	}
 };
-
 
 // Snake Object
 var snake = {
@@ -64,12 +71,14 @@ var snake = {
 		this.path = [{x:x,y:y},{x:x+1,y:y},{x:x+2,y:y},{x:x+3,y:y},{x:x+4,y:y}]; 
 		this.renderSnake();
 	},
-	renderSnake: function(){ // glow points lies in snake path
+	// glow points lies in snake path
+	renderSnake: function(){ 
 		for(var i=0;i<this.path.length;i++){
 			gameBoard.glowPoint(this.path[i].x,this.path[i].y);
 		}
 	},
-	nextPosition: function(){ // find next point for snake movement
+	// find next point for snake movement
+	nextPosition: function(){ 
 		var currPoint = this.path[this.path.length-1];
 		var nextPoint={};
 		switch(this.direction){
@@ -80,8 +89,9 @@ var snake = {
 		}
 		return nextPoint;
 	},
+	// making snake grow after eating 
 	moveSnake: function(nxtPt,isFood){ 
-		if(!isFood){ // making snake grow after eating 
+		if(!isFood){ 
 			var tail = this.path.shift();
 			gameBoard.hidePoint(tail.x,tail.y);
 		}
@@ -89,7 +99,7 @@ var snake = {
 		this.path.push(nxtPt);
 	}
 };
-// game state stuff
+// game state starting speed, starting level, food,
 var game = {
 	speed: 200,
 	level: 0,
@@ -101,12 +111,12 @@ var game = {
 		gameBoard.levelNode.innerHTML=0;gameBoard.scoreNode.innerHTML=0;
 		snake.init();
 		gameBoard.newFoodPoint();
-		document.addEventListener("keydown",this.eventHandler); //listen for key down event
+		document.addEventListener("keydown",this.eventHandler); //listen for key down event for pressing each direction
 		this.start();
 	},
 	on: function(){ // moving the snake
 		var nextPt = snake.nextPosition();
-		if(nextPt.x < 0 || nextPt.x >= gameBoard.size || nextPt.y < 0 || nextPt.y >= gameBoard.size){ // if snake going out of board
+		if(nextPt.x < 0 || nextPt.x >= gameBoard.size || nextPt.y < 0 || nextPt.y >= gameBoard.size){ // if snake going out of board this will trigger loss condition
 			game.over();
 			return;
 		}else{
@@ -116,7 +126,7 @@ var game = {
 			if(isPresent.length > 0) //check if tail is in way
 				game.over();
 			else{
-				if(nextPt.x==gameBoard.pointFood.x && nextPt.y==gameBoard.pointFood.y){ // snake eats food
+				if(nextPt.x==gameBoard.pointFood.x && nextPt.y==gameBoard.pointFood.y){ // snake eats food, score updates, new food generates
 					snake.moveSnake(nextPt,true);
 					game.updateScore();
 					gameBoard.newFoodPoint();
@@ -142,7 +152,7 @@ var game = {
 		clearInterval(this.intervalId);
 		document.removeEventListener("keypress",this.eventHandler);
 		var score = (this.level*1000) + (this.food*50);
-		alert("Game Over. Your Score is "+score);
+		alert("You Lose you silly snake! Your Score is "+score);
 		document.getElementById("startBtn").disabled = false;
 		this.state=3;
 	},
@@ -165,30 +175,28 @@ var game = {
 			btn.value = "Pause";
 		}
 	},
-	eventHandler: function(e){ // eventHandler for arrow keys
+	eventHandler: function(e){ // event handler for arrow keys
 		if(e.keyCode<38 && e.keyCode>40)
 			return;
 		
 		if(snake.direction == 0 || snake.direction == 2){
-			if(e.keyCode == 38)
+			if(e.keyCode == UP_KEY)
 				snake.direction=3;
-			else if(e.keyCode == 40)	
+			else if(e.keyCode == DOWN_KEY)	
 				snake.direction=1;
 		}else{
-			if(e.keyCode == 37)
+			if(e.keyCode == LEFT_KEY)
 				snake.direction=2;
-			else if(e.keyCode == 39)	
+			else if(e.keyCode == RIGHT_KEY)	
 				snake.direction=0;
 		}
 	}
 };
-
-
-// event listener for buttoon
+// start button = clear board and game init
 function start(btn){ 
 	gameBoard.clear();
 	game.init();
 	btn.disabled = true;
 }
 
-gameBoard.init(); 
+gameBoard.init();

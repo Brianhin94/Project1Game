@@ -34,9 +34,10 @@ div#gboard {
 }
 
 #gboard div.glow{
-    background-color: rgba(209, 119, 119, 0.747);
+    background-color: purple;
     border-color: black;
-    border-radius: 10px;
+	border-radius: 10px;
+
 }
 
 #gboard div.food{
